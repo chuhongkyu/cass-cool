@@ -14,23 +14,22 @@ const PlayList = () => {
     const [current_position,setPosition ] = useState('');
     const [sdkToken, setSdkToken] = useState('BQCEPNxPKC9w61xOUrPtSmTDOhNRxVY2A0ZsJkeJXsFJ-jcvoqiXhAjzdFvU-fBzDczeCRf26CL0mbS2QGoHhBoIkTyxQTMSRaLzqKkkB_roNDiWGNMEKNT_KHX8YpWd4BBqFpS3_J6I8uVEF_pJVols94mPcOjFjITZYRI7cb8ffPIrsMsJXrDfTGcZo6NSAJZvZPSqAGVXDiPEYYU72nIIhEVkgnV75A');
 
+    // useEffect(() => {
+
+    //     // 외부 스크립트를 동적으로 로드
+    //     const script = document.createElement("script");
+    //     script.src = "https://sdk.scdn.co/spotify-player.js";
+    //     script.async = true;
+    //     document.body.appendChild(script);
+
+    //     //컴포넌트가 언마운트되었을 때 스크립트를 제거
+    //     return () => {
+    //         document.body.removeChild(script);
+    //     };
+
+    // }, []);
+
     useEffect(() => {
-
-        //외부 스크립트를 동적으로 로드
-        // const script = document.createElement("script");
-        // script.src = "https://sdk.scdn.co/spotify-player.js";
-        // script.async = true;
-        // document.body.appendChild(script);
-
-        // //컴포넌트가 언마운트되었을 때 스크립트를 제거
-        // return () => {
-        //     document.body.removeChild(script);
-        // };
-
-    }, []);
-
-    useEffect(() => {
-
         const clientId = '41f483ba06604bd98d551109cbd31f7c';
         const clientSecret = '3c1b65956af948fc8aa066c8b4a9108f';
 
@@ -51,41 +50,47 @@ const PlayList = () => {
 
         getToken();
         
-        // window.onSpotiyWebPlaybackSDKReady = () => {
-        //     // window 붙임
-        //     const token = 'BQDLeLQsKpPXTe3srNNlkGFlmdV_lpgaWav4bo2c9saaWqN8X9QTpXMzIJgjjQoz-Du39BhUWdJ4Ru6omS0nhsxed5byvKvrp0_i8ehYbnrFJawG4SZ9KpXNeuLtqLfQyCovdjJy9TCLX4-eb-myKSlpRHE_Q5GinfwO9k6XVKozvIgqVhuP6KmS4Mo6W3pqnijeIO_q6D-ML4LrE2_buv2PbMC8fkmu4w';
-        //     console.log("token",token)
-        //     const player = new window.Spotify.Player({
-        //         name: 'Web Playback SDK Quick Start Player',
-        //         getOAuthToken: cb => { cb(token); },
-        //         volume: 0.5
-        //     });
+        // 외부 스크립트를 동적으로 로드
+        const script = document.createElement("script");
+        script.src = "https://sdk.scdn.co/spotify-player.js";
+        script.async = true;
+        document.body.appendChild(script);
+
+        window.onSpotifyWebPlaybackSDKReady = () => {
+            // window 붙임
+            const token = 'BQBOJh8gsbsyX6wT9PffM0FuBrecgVq8tGT-oK6deWccJL2ySAfKSuo5OVDYw7fMkYD621_jBCRgtFrsH1x9B0QLYy3n04bJ0-En2NeJk7-O5OFnueO6-KwrKyi4fuo77rHHI2lhvtnAjdzx6vp_jJ9FlMtdQvq2PVBzNOGwqbpfc0Svin9TFovXIm9FU82IJGlZJZZeOKBpIc7rrEUxVM5FuR4tPgrN6Q';
+            console.log("token",token)
+            const player = new window.Spotify.Player({
+                name: 'Web Playback SDK Quick Start Player',
+                getOAuthToken: cb => { cb(token); },
+                volume: 0.5
+            });
         
-        //     player.addListener("ready", ({ device_id }) => {
-        //         console.log("Ready with Device ID",device_id);
-        //         setDiviceId(device_id)
-        //     });
+            player.addListener("ready", ({ device_id }) => {
+                console.log("Ready with Device ID",device_id);
+                setDiviceId(device_id)
+            });
         
-        //     player.addListener("not_ready", ({ device_id }) => {
-        //         console.log("Device ID has gone offline", device_id);
-        //     });
+            player.addListener("not_ready", ({ device_id }) => {
+                console.log("Device ID has gone offline", device_id);
+            });
         
-        //     player.addListener("player_state_changed", (state) => {
-        //     if (!state) {
-        //     return;
-        //     }
-        //         console.log("state changed", state);
-        //         setPosition(state.position);
-        //     });
+            player.addListener("player_state_changed", (state) => {
+            if (!state) {
+            return;
+            }
+                console.log("state changed", state);
+                setPosition(state.position);
+            });
         
-        //     player.connect();
-        //     player.connect().then(success => {
-        //         if (success) {
-        //         console.log('The Web Playback SDK successfully connected to Spotify!');
-        //         }
-        //     })
-        //     console.log(player)
-        // }
+            player.connect();
+            player.connect().then(success => {
+                if (success) {
+                console.log('The Web Playback SDK successfully connected to Spotify!');
+                }
+            })
+            console.log(player)
+        }
         
     }, []);
 
@@ -114,20 +119,20 @@ const PlayList = () => {
         console.log("Play: 이건 진짜",accessToken)
         console.log(trackId)
 
-        // const response = await fetch(`https://api.spotify.com/v1/me/player/play`, {
-        //     method: 'PUT',
-        //     headers: {
-        //     'Authorization': `Bearer ${accessToken}`,
-        //     'Content-Type': 'application/json'
-        // },
-        let id = "0d1841b0976bae2a3a310dd74c0f3df354899bc8";
-
-        const response = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
+        const response = await fetch(`https://api.spotify.com/v1/me/player/play`, {
             method: 'PUT',
             headers: {
             'Authorization': `Bearer ${accessToken}`,
             'Content-Type': 'application/json'
         },
+        // let id = "0d1841b0976bae2a3a310dd74c0f3df354899bc8";
+
+        // const response = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
+        //     method: 'PUT',
+        //     headers: {
+        //     'Authorization': `Bearer ${accessToken}`,
+        //     'Content-Type': 'application/json'
+        // },
 
         body: JSON.stringify({
             "context_uri": `spotify:album:${trackId}`,
