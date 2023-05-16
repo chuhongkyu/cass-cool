@@ -8,82 +8,81 @@ const env = process.env;
 env.PUBLIC_URL = env.PUBLIC_URL || "";
 
 const PlayList = () => {
-    const [accessToken, setAccessToken] = useState('');
+    const [accessToken, setAccessToken] = useState();
     const [musicList, setMusicList] = useState([]);
     const [isPlaying, setIsPlaying] = useState(false);
     const [active, setActive] = useState(false)
     const [currentTrack, setCurrentTrack] = useState('');
-    const [deviceId, setDiviceId] = useState('');
-    const [current_position,setPosition ] = useState('');
-
-    // window 붙임
-    // const token = 'BQAxVeCeSq3siH7q-ssqBFoDJoil46_7L2IZnf5srtWAn4Cs1ly8xN2FpIdsjLFkrcg6izjXoWn8EtF20LHUKomn8Hqoho_X-2NtkvVsnfXZDYpTG92PHQVfoQGT3-NlOEdt6H252P8-ocwvihy0ZmN4jLV3LOzWVb0wiYZMtCeOGK2Tn9MQKDOFYvtRw_rWYOuEXOneJzHzfTbad1esi2TCYewUBiYmPw';
+    // const [deviceId, setDiviceId] = useState('');
+    // const [current_position,setPosition ] = useState('');
 
     useEffect(() => {
         const clientId = '41f483ba06604bd98d551109cbd31f7c';
         const clientSecret = '3c1b65956af948fc8aa066c8b4a9108f';
-
         const getToken = async () => {
             const response = await fetch('https://accounts.spotify.com/api/token', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret)
-                },
-            body: 'grant_type=client_credentials'
-        });
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret)
+                    },
+                body: 'grant_type=client_credentials'
+            });
             const data = await response.json();
-            const token2 = data.access_token;
-            setAccessToken(token2);
-            console.log(accessToken)
+            const token = data.access_token;
+            setAccessToken(token);
+            localStorage.setItem('access_token', token)
         };
 
-        getToken();
-        
-        // 외부 스크립트를 동적으로 로드
-        // const script = document.createElement("script");
-        // script.src = "https://sdk.scdn.co/spotify-player.js";
-        // script.async = true;
-        // document.body.appendChild(script);
-
-        // window.onSpotifyWebPlaybackSDKReady = () => {
-            
-        //     console.log("token",token)
-
-        //     const player = new window.Spotify.Player({
-        //         name: 'Web Playback SDK Quick Start Player',
-        //         getOAuthToken: cb => { cb(token); },
-        //         volume: 0.5
-        //     });
-        
-        //     player.addListener("ready", ({ device_id }) => {
-        //         console.log("Ready with Device ID",device_id);
-        //         setDiviceId(device_id)
-        //         playTrack('38VzP4yWfHdHafITKKRHEB', token, device_id)
-        //     });
-        
-        //     player.addListener("not_ready", ({ device_id }) => {
-        //         console.log("Device ID has gone offline", device_id);
-        //     });
-        
-        //     player.addListener("player_state_changed", (state) => {
-        //     if (!state) {
-        //     return;
-        //     }
-        //         console.log("state changed", state);
-        //         setPosition(state.position);
-        //     });
-        
-        //     player.connect();
-        //     player.connect().then(success => {
-        //         if (success) {
-        //           console.log('The Web Playback SDK successfully connected to Spotify!');
-        //         }
-        //     })
-        //     console.log(player)
-        // }
-        
+        if(localStorage.getItem('access_token')){
+            console.log('이미 인증완료',localStorage.getItem('access_token'))
+            setAccessToken(localStorage.getItem('access_token'));
+            console.log('값',accessToken)
+        }else{
+            getToken();
+            console.log("인증 요청 완료",localStorage.getItem('access_token'))
+        }
     }, []);
+
+    // useEffect(()=>{
+    //     const script = document.createElement("script");
+    //     script.src = "https://sdk.scdn.co/spotify-player.js";
+    //     script.async = true;
+    //     document.body.appendChild(script);
+
+    //     window.onSpotifyWebPlaybackSDKReady = () => {
+
+    //         const player = new window.Spotify.Player({
+    //             name: 'Web Playback SDK Quick Start Player',
+    //             getOAuthToken: cb => { cb(accessToken); },
+    //             volume: 0.5
+    //         });
+        
+    //         player.connect();
+    //         player.connect().then(success => {
+    //             if (success) {
+    //               console.log('The Web Playback SDK successfully connected to Spotify!');
+    //             }
+    //         })
+    //         console.log(player)
+
+    //         player.addListener("ready", ({ device_id }) => {
+    //             console.log("Ready with Device ID",device_id);
+    //             setDiviceId(device_id)
+    //             playTrack('5ht7ItJgpBH7W6vJ5BqpPr', accessToken, device_id)
+    //         });
+        
+    //         player.addListener("not_ready", ({ device_id }) => {
+    //             console.log("Device ID has gone offline", device_id);
+    //         });
+        
+    //         player.addListener("player_state_changed", (state) => {
+    //         if (!state) return
+    //             console.log("state changed", state);
+    //             setPosition(state.position);
+    //         });
+    //     }
+    // },[accessToken])
 
 
 
@@ -99,41 +98,37 @@ const PlayList = () => {
         const tracks = data.items.map(item => item.track);
         setMusicList(tracks);
         console.log("뮤직 리스트 1번",tracks[0])
-
     };
 
 
-    // const playTrack = async (trackId, token, deviceId) => {
-    //     setCurrentTrack(trackId);
-    //     setIsPlaying(true);
+    const playTrack = async (trackId, token, deviceId) => {
+        setCurrentTrack(trackId);
+        setIsPlaying(true);
+        console.log(trackId)
 
-    //     console.log("Play: 파라미터",token)
-    //     console.log("Play: 이건 진짜",accessToken)
-    //     console.log(trackId)
+        const response = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
+            method: 'PUT',
+            headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
 
-    //     const response = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
-    //         method: 'PUT',
-    //         headers: {
-    //         'Authorization': `Bearer ${token}`,
-    //         'Content-Type': 'application/json'
-    //     },
+        body: JSON.stringify({
+            "context_uri": `spotify:album:${trackId}`,
+            "offset": {
+                "position": 5
+            },
+            "position_ms": 0
+        })
 
-    //     body: JSON.stringify({
-    //         "context_uri": `spotify:album:${trackId}`,
-    //         "offset": {
-    //             "position": 5
-    //         },
-    //         "position_ms": 0
-    //     })
+        });
 
-    //     });
-
-    //     if (response.status === 204) {
-    //     console.log('Playback started.');
-    //     } else {
-    //     console.log('Failed to start playback.');
-    //     } 
-    // };
+        if (response.status === 204) {
+        console.log('Playback started.');
+        } else {
+        console.log('Failed to start playback.');
+        } 
+    };
 
 
 
@@ -152,8 +147,10 @@ const PlayList = () => {
                 <div className='description'>
                     <p>spotify 사용법</p>
                     <span>위 버튼 누르세요.</span>
-                    <span> - 플레이리스트 링크 복사에서 끌어옴.<br></br>
-                            - 개인 플레이리스트 만들면 곡 선정 가능</span>
+                    <span> - 플레이리스트 링크 복사에서 끌어옴.<br/>
+                           - 개인 플레이리스트 만들면 곡 선정 가능<br/>
+                           - 노래재생은 유료 토튼(1시간 짜리로 확인해보니 됨) (무료는 안됨)<br/>
+                    </span>
                     <img src={env.PUBLIC_URL + '/img/dummy.JPG'}/>
                 </div>
             ) }
