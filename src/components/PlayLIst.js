@@ -4,30 +4,20 @@ import React, { useState, useEffect } from 'react';
 
 const PLAY_ID = '37i9dQZF1DX0sa2Fqej3CR'
 
+const env = process.env;
+env.PUBLIC_URL = env.PUBLIC_URL || "";
+
 const PlayList = () => {
     const [accessToken, setAccessToken] = useState('');
     const [musicList, setMusicList] = useState([]);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [player, setMainPlayer] = useState()
+    const [active, setActive] = useState(false)
     const [currentTrack, setCurrentTrack] = useState('');
     const [deviceId, setDiviceId] = useState('');
     const [current_position,setPosition ] = useState('');
-    const [sdkToken, setSdkToken] = useState('BQCEPNxPKC9w61xOUrPtSmTDOhNRxVY2A0ZsJkeJXsFJ-jcvoqiXhAjzdFvU-fBzDczeCRf26CL0mbS2QGoHhBoIkTyxQTMSRaLzqKkkB_roNDiWGNMEKNT_KHX8YpWd4BBqFpS3_J6I8uVEF_pJVols94mPcOjFjITZYRI7cb8ffPIrsMsJXrDfTGcZo6NSAJZvZPSqAGVXDiPEYYU72nIIhEVkgnV75A');
 
-    // useEffect(() => {
-
-    //     // 외부 스크립트를 동적으로 로드
-    //     const script = document.createElement("script");
-    //     script.src = "https://sdk.scdn.co/spotify-player.js";
-    //     script.async = true;
-    //     document.body.appendChild(script);
-
-    //     //컴포넌트가 언마운트되었을 때 스크립트를 제거
-    //     return () => {
-    //         document.body.removeChild(script);
-    //     };
-
-    // }, []);
+    // window 붙임
+    // const token = 'BQAxVeCeSq3siH7q-ssqBFoDJoil46_7L2IZnf5srtWAn4Cs1ly8xN2FpIdsjLFkrcg6izjXoWn8EtF20LHUKomn8Hqoho_X-2NtkvVsnfXZDYpTG92PHQVfoQGT3-NlOEdt6H252P8-ocwvihy0ZmN4jLV3LOzWVb0wiYZMtCeOGK2Tn9MQKDOFYvtRw_rWYOuEXOneJzHzfTbad1esi2TCYewUBiYmPw';
 
     useEffect(() => {
         const clientId = '41f483ba06604bd98d551109cbd31f7c';
@@ -43,60 +33,62 @@ const PlayList = () => {
             body: 'grant_type=client_credentials'
         });
             const data = await response.json();
-            const token = data.access_token;
-            setAccessToken(token);
+            const token2 = data.access_token;
+            setAccessToken(token2);
             console.log(accessToken)
         };
 
         getToken();
         
         // 외부 스크립트를 동적으로 로드
-        const script = document.createElement("script");
-        script.src = "https://sdk.scdn.co/spotify-player.js";
-        script.async = true;
-        document.body.appendChild(script);
+        // const script = document.createElement("script");
+        // script.src = "https://sdk.scdn.co/spotify-player.js";
+        // script.async = true;
+        // document.body.appendChild(script);
 
-        window.onSpotifyWebPlaybackSDKReady = () => {
-            // window 붙임
-            const token = 'BQBOJh8gsbsyX6wT9PffM0FuBrecgVq8tGT-oK6deWccJL2ySAfKSuo5OVDYw7fMkYD621_jBCRgtFrsH1x9B0QLYy3n04bJ0-En2NeJk7-O5OFnueO6-KwrKyi4fuo77rHHI2lhvtnAjdzx6vp_jJ9FlMtdQvq2PVBzNOGwqbpfc0Svin9TFovXIm9FU82IJGlZJZZeOKBpIc7rrEUxVM5FuR4tPgrN6Q';
-            console.log("token",token)
-            const player = new window.Spotify.Player({
-                name: 'Web Playback SDK Quick Start Player',
-                getOAuthToken: cb => { cb(token); },
-                volume: 0.5
-            });
+        // window.onSpotifyWebPlaybackSDKReady = () => {
+            
+        //     console.log("token",token)
+
+        //     const player = new window.Spotify.Player({
+        //         name: 'Web Playback SDK Quick Start Player',
+        //         getOAuthToken: cb => { cb(token); },
+        //         volume: 0.5
+        //     });
         
-            player.addListener("ready", ({ device_id }) => {
-                console.log("Ready with Device ID",device_id);
-                setDiviceId(device_id)
-            });
+        //     player.addListener("ready", ({ device_id }) => {
+        //         console.log("Ready with Device ID",device_id);
+        //         setDiviceId(device_id)
+        //         playTrack('38VzP4yWfHdHafITKKRHEB', token, device_id)
+        //     });
         
-            player.addListener("not_ready", ({ device_id }) => {
-                console.log("Device ID has gone offline", device_id);
-            });
+        //     player.addListener("not_ready", ({ device_id }) => {
+        //         console.log("Device ID has gone offline", device_id);
+        //     });
         
-            player.addListener("player_state_changed", (state) => {
-            if (!state) {
-            return;
-            }
-                console.log("state changed", state);
-                setPosition(state.position);
-            });
+        //     player.addListener("player_state_changed", (state) => {
+        //     if (!state) {
+        //     return;
+        //     }
+        //         console.log("state changed", state);
+        //         setPosition(state.position);
+        //     });
         
-            player.connect();
-            player.connect().then(success => {
-                if (success) {
-                console.log('The Web Playback SDK successfully connected to Spotify!');
-                }
-            })
-            console.log(player)
-        }
+        //     player.connect();
+        //     player.connect().then(success => {
+        //         if (success) {
+        //           console.log('The Web Playback SDK successfully connected to Spotify!');
+        //         }
+        //     })
+        //     console.log(player)
+        // }
         
     }, []);
 
 
 
     const getMusicList = async () => {
+        setActive(!active)
         const response = await fetch(`https://api.spotify.com/v1/playlists/${PLAY_ID}/tracks`, {
         method: 'GET',
         headers: {
@@ -111,52 +103,37 @@ const PlayList = () => {
     };
 
 
-    const playTrack = async (trackId, token) => {
-        setCurrentTrack(trackId);
-        setIsPlaying(true);
+    // const playTrack = async (trackId, token, deviceId) => {
+    //     setCurrentTrack(trackId);
+    //     setIsPlaying(true);
 
-        console.log("Play: 파라미터",token)
-        console.log("Play: 이건 진짜",accessToken)
-        console.log(trackId)
+    //     console.log("Play: 파라미터",token)
+    //     console.log("Play: 이건 진짜",accessToken)
+    //     console.log(trackId)
 
-        const response = await fetch(`https://api.spotify.com/v1/me/player/play`, {
-            method: 'PUT',
-            headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-        },
-        // let id = "0d1841b0976bae2a3a310dd74c0f3df354899bc8";
+    //     const response = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
+    //         method: 'PUT',
+    //         headers: {
+    //         'Authorization': `Bearer ${token}`,
+    //         'Content-Type': 'application/json'
+    //     },
 
-        // const response = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
-        //     method: 'PUT',
-        //     headers: {
-        //     'Authorization': `Bearer ${accessToken}`,
-        //     'Content-Type': 'application/json'
-        // },
+    //     body: JSON.stringify({
+    //         "context_uri": `spotify:album:${trackId}`,
+    //         "offset": {
+    //             "position": 5
+    //         },
+    //         "position_ms": 0
+    //     })
 
-        body: JSON.stringify({
-            "context_uri": `spotify:album:${trackId}`,
-            "offset": {
-                "position": 5
-            },
-            "position_ms": 0
-        })
+    //     });
 
-        // body: JSON.stringify({
-        // uris: [`spotify:track:${trackId}`],
-        // })
-        
-
-    });
-
-    console.log("응답", response.body)
-
-    if (response.status === 204) {
-    console.log('Playback started.');
-    } else {
-    console.log('Failed to start playback.');
-    } 
-    };
+    //     if (response.status === 204) {
+    //     console.log('Playback started.');
+    //     } else {
+    //     console.log('Failed to start playback.');
+    //     } 
+    // };
 
 
 
@@ -169,13 +146,32 @@ const PlayList = () => {
 
     return (
         <div className='main'>
+            
             <button className='loginbtn' onClick={getMusicList}>Spotify 로그인</button>
+            {active ? null : (
+                <div className='description'>
+                    <p>spotify 사용법</p>
+                    <span>위 버튼 누르세요.</span>
+                    <span> - 플레이리스트 링크 복사에서 끌어옴.<br></br>
+                            - 개인 플레이리스트 만들면 곡 선정 가능</span>
+                    <img src={env.PUBLIC_URL + '/img/dummy.JPG'}/>
+                </div>
+            ) }
+            
             {musicList.map(track => (
+
                 <div className='list' key={track.id} style={{width: "100%", display:"flex", justifyContent:"space-between",alignItems:"center"}}>
-                    <img style={{width:"50px", height:"50px"}}src={track.album.images[0].url} alt={track.album.id}/>
-                    <span>{track.name}</span>
-                    <button onClick={() => playTrack(track.album.id, accessToken)}>Play</button>
-                    {/* <button onClick={() => onPlay(track)}>Play</button> */}
+                    <a href={track.external_urls.spotify}>
+                        <div className='left'>
+                            <img style={{width:"50px", height:"50px"}}src={track.album.images[0].url} alt={track.album.id}/>
+                            <div className='content'>
+                                <span>이름: {track.name}</span>
+                                <span>가수: {track.artists[0].name}</span>
+                                <span>공개: {track.album.release_date}</span>
+                            </div>
+                        </div>
+                        <span>앨범명:{track.album.name}</span>
+                    </a>
                 </div>
             ))}
         {isPlaying && (
@@ -189,4 +185,3 @@ const PlayList = () => {
 };
 
 export default PlayList;
-
