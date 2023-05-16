@@ -14,20 +14,20 @@ const PlayList = () => {
     const [current_position,setPosition ] = useState('');
     const [sdkToken, setSdkToken] = useState('BQCEPNxPKC9w61xOUrPtSmTDOhNRxVY2A0ZsJkeJXsFJ-jcvoqiXhAjzdFvU-fBzDczeCRf26CL0mbS2QGoHhBoIkTyxQTMSRaLzqKkkB_roNDiWGNMEKNT_KHX8YpWd4BBqFpS3_J6I8uVEF_pJVols94mPcOjFjITZYRI7cb8ffPIrsMsJXrDfTGcZo6NSAJZvZPSqAGVXDiPEYYU72nIIhEVkgnV75A');
 
-    // useEffect(() => {
+    useEffect(() => {
 
-    //     // 외부 스크립트를 동적으로 로드
-    //     const script = document.createElement("script");
-    //     script.src = "https://sdk.scdn.co/spotify-player.js";
-    //     script.async = true;
-    //     document.body.appendChild(script);
+        //외부 스크립트를 동적으로 로드
+        // const script = document.createElement("script");
+        // script.src = "https://sdk.scdn.co/spotify-player.js";
+        // script.async = true;
+        // document.body.appendChild(script);
 
-    //     // 컴포넌트가 언마운트되었을 때 스크립트를 제거
-    //     return () => {
-    //         document.body.removeChild(script);
-    //     };
+        // //컴포넌트가 언마운트되었을 때 스크립트를 제거
+        // return () => {
+        //     document.body.removeChild(script);
+        // };
 
-    // }, []);
+    }, []);
 
     useEffect(() => {
 
