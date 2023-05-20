@@ -1,49 +1,75 @@
-.App {
-  text-align: center;
-  display: flex;
-  justify-content: center;
+.layout{
   width: 100%;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  height: 100vh;
+  background:  url('img/bg.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
 }
 
-.loginbtn{
+.nav{
+  width: 100%;
+  height: 50px;
+  background: #1ED760;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.layout_1{
+  width: 100%;
+  height: 100%;
+  background: skyblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.layout_2{
+  width: 100%;
+  height: 100%;
+  background: pink;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.layout nav a{
+  padding: 10px;
+}
+
+.play{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  height: 80vh;
+  background: rgba(0,0,0,0.68);
+  border-radius: 25px;
+}
+
+.play .loginbtn{
   padding: 20px;
   margin-top: 50px;
 }
 
-.main{
-  max-width: 1200px;
-}
-.list{
+.play .list{
   margin-bottom: 20px;
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(0,0,0,0.16);
 }
-.list:first-of-type{
+.play .list:first-of-type{
   margin-top: 100px;
 }
-.list a{
+
+.play .list a{
   width: fit-content;
   height: fit-content;
   text-decoration: none;
@@ -53,33 +79,22 @@
   align-items: center;
   width: 100%;
 }
-.list .left{
+.play .list .left{
   display: flex;
 }
-.content{
+.play .content{
   margin-left: 20px;
 }
 
-.content span{
+.play .content span{
   display: block;
   text-align: left;
 }
-.description span{
+.play .description span{
   display: block;
   margin-bottom: 20px;
 }
-.description img{
+.play .description img{
   width: 1200px;
   height: auto;
-}
-
-
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
