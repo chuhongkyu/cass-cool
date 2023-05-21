@@ -43,10 +43,10 @@ const Play = () => {
 
     return (
         <motion.div
-            initial={{x:-500}}
+            initial={{x:"100%"}}
             animate={{x:0}}
             transition={{duration: 1.5, ease:"easeInOut"}}
-            exit={{x:500}}
+            exit={{x:"-100%"}}
             className='play'>
             <button className='loginbtn' onClick={getMusicList}>Spotify 로그인</button>
             {musicList.map(track => (

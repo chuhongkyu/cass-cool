@@ -20,6 +20,7 @@
   align-items: center;
   gap: 15px;
   position: fixed;
+  z-index: 11;
   top: 0;
   left: 0;
 }
