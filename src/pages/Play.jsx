@@ -28,7 +28,7 @@ const Play = () => {
     }, []);
 
     const getMusicList = async () => {
-        setActive(!active)
+        setActive(true)
         const response = await fetch(`https://api.spotify.com/v1/playlists/${PLAY_ID}/tracks`, {
         method: 'GET',
         headers: {
@@ -48,7 +48,8 @@ const Play = () => {
             transition={{duration: 1.5, ease:"easeInOut"}}
             exit={{x:"-100%"}}
             className='play'>
-            <button className='loginbtn' onClick={getMusicList}>Spotify 로그인</button>
+            {!active ? <button className='loginbtn' onClick={getMusicList}>Spotify 로그인</button> : null}
+            <div className='lists'>
             {musicList.map(track => (
                 <div className='list' key={track.id} style={{width: "100%", display:"flex", justifyContent:"space-between",alignItems:"center"}}>
                     <a href={track.external_urls.spotify}>
@@ -64,6 +65,7 @@ const Play = () => {
                     </a>
                 </div>
             ))}
+            </div>
         </motion.div>
     );
 };

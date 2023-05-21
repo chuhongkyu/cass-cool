@@ -50,10 +50,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   width: 80%;
   height: 80vh;
   background: rgba(0,0,0,0.68);
   border-radius: 25px;
+  overflow: hidden;
+  padding: 20px;
 }
 
 .play .loginbtn{
@@ -61,20 +64,22 @@
   margin-top: 50px;
 }
 
+.play .lists{
+  padding-top: 20px;
+  overflow-y: scroll;
+}
+
 .play .list{
   margin-bottom: 20px;
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(0,0,0,0.16);
-}
-.play .list:first-of-type{
-  margin-top: 100px;
 }
 
 .play .list a{
   width: fit-content;
   height: fit-content;
   text-decoration: none;
-  color: #282c34;
+  color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
